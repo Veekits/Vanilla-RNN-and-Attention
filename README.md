@@ -1,0 +1,30 @@
+# Carry forward vs. retrieve: vanilla RNN vs. RNN + attention
+
+Pure NumPy (no PyTorch needed). Python 3.13, numpy, pandas, matplotlib.
+
+## Reproduce
+
+```
+python gradcheck.py                      # finite-difference check of the hand-written backprop
+python lr_probe.py 50 40                 # learning-rate probe on validation data (L=50; also run for 10, 25, 100)
+python run_experiments.py --worker 0 --workers 2 &   # all 89 runs, ~15 min on 2 cores
+python run_experiments.py --worker 1 --workers 2 &
+python analysis.py                       # tables, figs 1-6, forgetting diagnostics
+python failure_analysis.py               # in-distribution counts, RNN-fail cases, length-extrapolation stress test
+python failure_cases.py                  # every Model B error, both-fail cases, fig 7
+```
+
+Set `OMP_NUM_THREADS=1` for the timings reported in the report.
+
+## Files
+
+- `rnn_attn.py`        data generator, Model A / Model B, Adam, training loop
+- `run_experiments.py` main grid (L x seed x model) and controls
+- `analysis.py`, `failure_analysis.py`, `failure_cases.py`  tables, figures, diagnostics
+- `results/`           per-run JSON (accuracy, curves, time), summary CSVs
+- `figs/`              figures 1-7 used in the report
+
+## Task
+
+Each step: random value in 0-9 (one-hot) + marker flag. One step k is marked; the label is the value at k.
+k is uniform over 0..L-1, so the memory distance T-k is uniform over 0..L-1. Chance = 10%.

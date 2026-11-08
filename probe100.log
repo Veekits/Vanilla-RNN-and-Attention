@@ -1,0 +1,5 @@
+L=100 lr=0.001  rnn   best val acc 0.1225 (epoch 33)
+L=100 lr=0.001  attn  best val acc 1.0000 (epoch 40)
+L=100 lr=0.003  rnn   best val acc 0.1165 (epoch 13)
+L=100 lr=0.003  attn  best val acc 1.0000 (epoch 40)
+L=100 lr=0.01   rnn   best val acc 0.1205 (epoch 13)
